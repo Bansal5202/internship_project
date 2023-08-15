@@ -1,20 +1,21 @@
-import React from "react";
-import "./Header.css";
 import Navbar from "../../containers/Navbar/Navbar";
-import Searchbar from "../../containers/Searchbar/Searchbar";
+import SearchBar from "../../containers/Searchbar/Searchbar";
+
+import React from 'react'
 
 function Header() {
   return (
-    <>
-      <div>
-        <Navbar />
-      </div>
-
-      <div className="mt-20">
-        <Searchbar />
-      </div>
-    </>
-  );
+   <>
+   <div>
+    <Navbar/>
+   </div>
+   <div>
+    <SearchBar/>
+   </div>
+   </>
+   
+  )
 }
 
-export default Header;
+export default Header
+

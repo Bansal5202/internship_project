@@ -80,16 +80,18 @@ export default function SignUp() {
   // const [password, setPassword] = useState("");
 
   const onSubmit = (values) => {
-    // delete values.confirmPassword;
+    delete values.confirmPassword;
     // alert(JSON.stringify(values));
+    console.log(values)
     authService
       .create(values)
       .then((res) => {
+        console.log(res)
         setTimeout(() => {
           toast.success("Succesfully Registered");
         }, 2000);
 
-        Navigate("/login");
+        Navigate("/Login");
       })
       .catch((err) => {
         console.log(err);
