@@ -1,0 +1,23 @@
+.home-page {
+    width: 100vw;
+    height: 100vh;
+    /* background-color: aqua; */
+  }
+  
+  .home-page .home-page_main-container {
+    /* width: 8 */
+    height: 77vh;
+    /* margin-top: 5rem; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(102, 139, 139);
+    background-color: whitesmoke;
+  }
+  
+  .home-page_forms {
+    width: 200rem;
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+  }

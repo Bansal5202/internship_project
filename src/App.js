@@ -1,21 +1,19 @@
-import './App.css';
-import Home from './pages/Home';
-import About from './pages/About';
-import {BrowserRouter as Router,Routes,Route} from 'react-router-dom'
-function App() {
-  
-  return (
-    <Router>
-    <div>
-      
-      <Routes>
-        <Route path='/' element={<Home/>}/>
-        <Route path='/about' element={<About name="bansal"/>}/>
-      
-      </Routes>
+import "./App.css";
+import ContextProvider from "./Context/ContextProvider";
+import Pages from "./pages/Pages";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
-    </div>
-    </Router>
+function App() {
+  return (
+    <>
+      <ContextProvider>
+        <ToastContainer/>
+        <div className="App">
+          <Pages />
+        </div>
+      </ContextProvider>
+    </>
   );
 }
 

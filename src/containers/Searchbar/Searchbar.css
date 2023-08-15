@@ -1,0 +1,48 @@
+.searchbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    align-items: center;
+    gap: 2%;
+  }
+  
+  .searchbar_input input {
+    /* margin-left: 10px; */
+    border: 1px solid black;
+    background: transparent;
+    width: 422px;
+    padding: 0.5rem 1rem;
+    height: 40px;
+    color: var(--color-quaternary);
+  }
+  
+  .searchbar_input input::placeholder {
+    color: var(--color-quaternary);
+  }
+  
+  .searchbar_button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .searchbar_button button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    height: 40px;
+    width: 129px;
+  }
+  
+  .searchbar_button .search {
+    color: aliceblue;
+    background-color: #80bf32;
+  }
+  
+  .searchbar_button .cancle {
+    color: aliceblue;
+    background-color: #f14d54;
+  }
