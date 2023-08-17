@@ -1,34 +1,52 @@
-import {
-  Box,
-  TextField,
-  Button,
-  
-  List,
-  ListItem,
-  
-  Typography,
-} from "@material-ui/core";
+import Box from "@mui/material/Box";
 
-import { Search } from "@material-ui/icons";
-import { ShoppingCart } from "@material-ui/icons";
-
-import { useEffect, useState } from "react";
+import TextField from "@mui/material/TextField";
+import SearchIcon from "@mui/icons-material/Search";
+import Button from "@mui/material/Button";
+import { List, ListItem, Typography } from "@mui/material";
+import { RoutePaths } from "../../utils/enum";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import bookService from "../../service/book.service";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../Context/auth";
+import { useCartContext } from "../../Context/cart";
+import Shared from "../../utils/shared";
+import { toast } from "react-toastify";
 
 const SearchBar = () => {
-  const open = false;
+  const authContext = useAuthContext();
+  const cartContext = useCartContext();
+  const Navigate=useNavigate()
   const [query, setquery] = useState("");
   const [bookList, setbookList] = useState([]);
   const [openSearchResult, setOpenSearchResult] = useState(false);
 
   const searchBook = async () => {
-    // const res = await bookService.searchBook(query);
-    // setbookList(res);
+    const res = await bookService.searchBook(query);
+    setbookList(res);
   };
 
   const search = () => {
     document.body.classList.add("search-results-open");
     searchBook();
     setOpenSearchResult(true);
+  };
+
+  const addToCart = (book) => {
+    if (!authContext.user.id) {
+      Navigate(RoutePaths.Login);
+      toast.error("Please login before adding books to cart");
+    } else {
+      Shared.addToCart(book, authContext.user.id).then((res) => {
+        if (res.error) {
+          toast.error(res.error);
+        } else {
+          toast.success("Item added in cart");
+          cartContext.updateCart();
+        }
+      });
+    }
   };
 
   return (
@@ -73,7 +91,7 @@ const SearchBar = () => {
               backgroundColor: "#339933",
             },
           }}
-          startIcon={<Search />}
+          startIcon={<SearchIcon />}
           onClick={search}
         >
           Search
@@ -132,7 +150,7 @@ const SearchBar = () => {
                         </Typography>
                         <Button
                           variant="contained"
-                          startIcon={<ShoppingCart />}
+                          startIcon={<ShoppingCartIcon />}
                           sx={{
                             marginTop: "auto",
                             backgroundColor: "#ea3c53",
@@ -140,6 +158,7 @@ const SearchBar = () => {
                               backgroundColor: "#e60026",
                             },
                           }}
+                          onClick={() => addToCart(item)}
                         >
                           Add
                         </Button>

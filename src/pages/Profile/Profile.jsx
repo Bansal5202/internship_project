@@ -2,9 +2,9 @@ import { AuthContext,useAuthContext } from "../../Context/auth";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-import userService from "../services/user.service";
+import userService from "../../service/user.service";
 import { toast } from "react-toastify";
-import Shared from "../utils/shared";
+import Shared from "../../utils/shared";
 import { useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import {

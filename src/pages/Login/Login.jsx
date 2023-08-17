@@ -1,57 +1,44 @@
 import { Link, useNavigate } from "react-router-dom";
-import "./Login.css";
+
 import { useAuthContext } from "../../Context/auth";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import authService from "../../service/auth.service";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import { toast } from "react-toastify";
 
-function Copyright() {
+import { toast } from "react-toastify";
+import * as React from 'react';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+function Copyright(props) {
   return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
+    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+      {'Copyright © '}
+      <Link to="/">
         Your Website
-      </Link>{" "}
+      </Link>{' '}
       {new Date().getFullYear()}
-      {"."}
+      {'.'}
     </Typography>
   );
 }
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: "100%", 
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
+// TODO remove, this demo shouldn't need to reset the theme.
+
+const defaultTheme = createTheme();
 
 export default function Login() {
+ 
   const Navigate = useNavigate();
 
   const initialValue = {
@@ -78,18 +65,27 @@ export default function Login() {
     });
   };
 
-  const classes = useStyles();
+
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <Formik
+    <ThemeProvider theme={defaultTheme}>
+      <Container component="main" maxWidth="xs">
+      
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <Formik
           initialValues={initialValue}
           validationSchema={validationSchema}
           onSubmit={onSubmit}
@@ -102,13 +98,14 @@ export default function Login() {
             handleChange,
             handleSubmit,
           }) => (
-            <form className={classes.form} onSubmit={handleSubmit} noValidate>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="email"
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              
+
+              id="email"
                 value={values.email}
                 label="Email Address"
                 name="email"
@@ -116,56 +113,55 @@ export default function Login() {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 helperText={errors.email && touched.email ? errors.email : null}
-                error={errors.email && touched.email}
+                
                 autoFocus
-              />
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                value={values.password}
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                helperText={
-                  errors.password && touched.password ? errors.password : null
-                }
-                autoComplete="current-password"
-              />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-              >
-                Sign In
-              </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link variant="body2">Forgot password?</Link>
-                </Grid>
-                <Grid item>
-                  <Link to="/SignUp" className="text-blue-800">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              value={values.password}
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              helperText={
+                errors.password && touched.password ? errors.password : null
+              }
+              autoComplete="current-password"
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link to="#" variant="body2">
+                  Forgot password?
+                </Link>
               </Grid>
-            </form>
+              <Grid item>
+              <Link to="/SignUp" className="text-blue-800">
+                {"Don't have an account? Sign Up"}
+              </Link>
+              </Grid>
+            </Grid>
+          </Box>
           )}
-        </Formik>
-      </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
-    </Container>
+          </Formik>
+        </Box>
+        <Copyright sx={{ mt: 8, mb: 4 }} />
+      </Container>
+    </ThemeProvider>
   );
 }
