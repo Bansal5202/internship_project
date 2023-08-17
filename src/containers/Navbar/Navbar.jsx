@@ -1,18 +1,20 @@
-import { Box, Container, Divider,Button, Grid } from "@material-ui/core";
-import { ShoppingCart } from "@material-ui/icons";
+import { Box, Container, Divider,Button, Grid, Stack } from "@mui/material";
+import { ShoppingCart } from "@mui/icons-material";
 import Shared from "../../utils/shared";
 import { useMemo } from "react";
 import { RoutePaths } from "../../utils/enum";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../../Context/auth";
-import {Chip} from "@material-ui/core";
+import { useCartContext } from "../../Context/cart";
+import {Chip} from "@mui/material";
+import Logo from "../../assets/BookStore.png"
 const linkStyle = {
   textDecoration: "none",
 };
 
 const Navbar = () => {
   const authContext = useAuthContext();
-
+  const cartContext=useCartContext();
   const items = useMemo(() => {
     return Shared.NavigationItems.filter(
       (item) =>
@@ -31,14 +33,14 @@ const Navbar = () => {
           display: "flex",
           justifyContent: "space-between",
           height: "92px",
-          width:"100%"
+        
         }}
       >
         <Link
           to={RoutePaths.BookListing}
           style={{ display: "flex", alignItems: "center" }}
         >
-          <img src="#"alt="logo" style={{ width: "180px" }} />
+          <img src={Logo}alt="logo" style={{ width: "180px" }} />
         </Link>
 
         <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
@@ -49,10 +51,10 @@ const Navbar = () => {
             />
           )}
 
-          <Grid
+          <Stack
           container
             direction="row"
-            spacing={2}
+            spacing={1}
             divider={<Divider orientation="vertical" flexItem />}
           >
             {!authContext.user.id && (
@@ -60,8 +62,9 @@ const Navbar = () => {
                 <Link to={RoutePaths.Login} style={linkStyle}>
                   <Button
                     variant="text"
-                    className="text-red-800"
-                    sx={{ textTransform: "capitalize" }}
+                    color="error"
+                    
+                    sx={{ textTransform: "capitalize"  }}
                   >
                     Login
                   </Button>
@@ -69,7 +72,7 @@ const Navbar = () => {
                 <Link to={RoutePaths.Register} style={linkStyle}>
                   <Button
                     variant="text"
-                    
+                    color="error"
                     sx={{ textTransform: "capitalize" }}
                   >
                     Register
@@ -82,7 +85,7 @@ const Navbar = () => {
                 <Link to={item.route} style={linkStyle} key={index}>
                   <Button
                     variant="text"
-                   
+                    color="error"
                     sx={{ textTransform: "capitalize" }}
                   >
                     {item.name}
@@ -99,14 +102,14 @@ const Navbar = () => {
                 Books
               </Button>
             </Link> */}
-          </Grid>
-          <Link to="/cart" style={linkStyle}>
+          </Stack>
+          <Link to={RoutePaths.Cart} style={linkStyle}>
             <Button
               variant="outlined"
-              className="text-red-800"
+              color="error"
               startIcon={<ShoppingCart style={{ color: "#c62828" }} />}
             >
-              <span style={{ color: "#c62828", marginRight: "5px" }}>0</span>
+              <span style={{ color: "#c62828", marginRight: "5px" }}>{cartContext.cartData.length}</span>
               Cart
             </Button>
           </Link>
@@ -114,7 +117,7 @@ const Navbar = () => {
             <Link to="/book" style={linkStyle}>
               <Button
                 variant="text"
-                className="text-red-800"
+                color="error"
                 sx={{ textTransform: "capitalize" }}
                 onClick={logOut}
               >

@@ -1,32 +1,41 @@
-import React from "react";
 // import { useState } from "react";
-import { useStyles } from "./style";
-import ValidationErrorMessage from "../../component/validationMessage";
+
+
 import authService from "../../service/auth.service";
 import { toast } from "react-toastify";
 import { Formik } from "formik";
-import * as Yup from 'yup';
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import { Link, useNavigate } from "react-router-dom";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
-import { FormControl } from "@material-ui/core";
-import { Select } from "@material-ui/core";
-import { InputLabel } from "@material-ui/core";
-import { MenuItem } from "@material-ui/core";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
-import Container from "@material-ui/core/Container";
-import "./style";
+import * as Yup from "yup";
 
-function Copyright() {
+import { Link, useNavigate } from "react-router-dom";
+
+import * as React from "react";
+import { FormControl } from "@mui/material";
+import { InputLabel } from "@mui/material";
+import { Select } from "@mui/material";
+import { MenuItem } from "@mui/material";
+
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+function Copyright(props) {
   return (
-    <Typography variant="body2" color="textSecondary" align="center">
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
       {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
         Your Website
@@ -36,6 +45,10 @@ function Copyright() {
     </Typography>
   );
 }
+
+// TODO remove, this demo shouldn't need to reset the theme.
+
+const defaultTheme = createTheme();
 
 export default function SignUp() {
   const Navigate = useNavigate();
@@ -60,20 +73,23 @@ export default function SignUp() {
     },
   ];
 
-  const validationSchema=Yup.object().shape({
-    email:Yup.string().email("Invalid email address format").required("email is required"),
+  const validationSchema = Yup.object().shape({
+    email: Yup.string()
+      .email("Invalid email address format")
+      .required("email is required"),
     password: Yup.string()
-    .min(5,"Password must be 5 character at minimum")
-    .required("Password is required"),
-    confirmPassword : Yup.string()
-    .oneOf(
-      [Yup.ref("password"),null],
-      "Passworrd and Cofirm password must be match."
-    ).required("Confirm Password is required."),
-    firstName:Yup.string().required("First name is required"),
-    lastName:Yup.string().required("Last name is required"),
-    roleId:Yup.number().required("Role name is required"),
-  })
+      .min(5, "Password must be 5 character at minimum")
+      .required("Password is required"),
+    confirmPassword: Yup.string()
+      .oneOf(
+        [Yup.ref("password"), null],
+        "Passworrd and Cofirm password must be match."
+      )
+      .required("Confirm Password is required."),
+    firstName: Yup.string().required("First name is required"),
+    lastName: Yup.string().required("Last name is required"),
+    roleId: Yup.number().required("Role name is required"),
+  });
   // const [firstname, setFirstname] = useState("");
   // const [lastname, setLastname] = useState("");
   // const [email, setEmail] = useState("");
@@ -82,11 +98,11 @@ export default function SignUp() {
   const onSubmit = (values) => {
     delete values.confirmPassword;
     // alert(JSON.stringify(values));
-    console.log(values)
+    console.log(values);
     authService
       .create(values)
       .then((res) => {
-        console.log(res)
+        console.log(res);
         setTimeout(() => {
           toast.success("Succesfully Registered");
         }, 2000);
@@ -98,177 +114,186 @@ export default function SignUp() {
       });
   };
 
-  const classes = useStyles();
-
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography><Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
-          {({values, touched, errors, handleChange, handleSubmit}) => (
-            <form
-        
-              className={classes.form}
-              onSubmit={handleSubmit}
-              noValidate
-            >
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                <FormControl fullWidth>
-                  <TextField
-                    autoComplete="fname"
-                    name="firstName"
-                    variant="outlined"
-                    value={values.firstName}
-                    required
-                    fullWidth
-                    onChange={handleChange}
-                    id="first-name"
-                    label="First Name"
-                    autoFocus
-                  />
-                  <div className="text-red-600">
-                  {errors.firstName && touched.firstName && errors.firstName}
-                </div>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                <FormControl fullWidth>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    value={values.lastName}
-                    onChange={handleChange}
-                    id="last-name"
-                    label="Last Name"
-                    name="lastName"
-                    autoComplete="lname"
-                  />
-                   <div className="text-red-600">
-                  {errors.lastName && touched.lastName && errors.lastName}
-                </div>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12}>
-                  <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Roles</InputLabel>
-                    <Select
-                      name="roleId"
-                      id={"roleId"}
-                      value={values.roleId}
-                      onChange={handleChange}
-                    >
-                      {roleList.length > 0 &&
-                        roleList.map((role) => (
-                          <MenuItem value={role.id} key={"name" + role.id}>
-                            {role.name}
-                          </MenuItem>
-                        ))}
-                    </Select>
-                    <div className="text-red-600">
-                  {errors.roleId && touched.roleId && errors.roleId}
-                </div>
-                    </FormControl>
-                </Grid>
-
-                <Grid item xs={12}>
-                <FormControl fullWidth>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    value={values.email}
-                    onChange={handleChange}
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
-                  />
-                   <div className="text-red-600">
-                  {errors.email && touched.email && errors.email}
-                </div>
-                  </FormControl>
-                </Grid>
-                
-                <Grid item xs={12}>
-                <FormControl fullWidth>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    value={values.password}
-                    onChange={handleChange}
-                    name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    autoComplete="current-password"
-                  />
-                   <div className="text-red-600">
-                  {errors.password && touched.password && errors.password}
-                </div>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12}>
-                <FormControl fullWidth>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    value={values.confirmPassword}
-                    onChange={handleChange}
-                    name="confirmPassword"
-                    label="confirm Password"
-                    type="password"
-                    id="confirm-password"
-                    autoComplete="current-password"
-                  />
-                   <div className="text-red-600">
-                  {errors.confirmPassword &&
-                    touched.confirmPassword &&
-                    errors.confirmPassword}
-                </div>
-                    </FormControl>
-                </Grid>
-
-                <Grid item xs={12}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox value="allowExtraEmails" color="primary" />
-                    }
-                    label="I want to receive inspiration, marketing promotions and updates via email."
-                  />
-                </Grid>
-              </Grid>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
+    <ThemeProvider theme={defaultTheme}>
+      <Container component="main" maxWidth="xs">
+      
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign up
+          </Typography>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={onSubmit}
+          >
+            {({ values, touched, errors, handleChange, handleSubmit }) => (
+              <Box
+                component="form"
+                noValidate
+                onSubmit={handleSubmit}
+                sx={{ mt: 3 }}
               >
-                Sign Up
-              </Button>
-              <Grid container justifyContent="flex-end">
-                <Grid item>
-                  <Link to="/Login" className="text-blue-800">
-                    Already have an account? Sign in
-                  </Link>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={6}>
+                  <FormControl fullWidth>
+                    <TextField
+                      autoComplete="given-name"
+                      name="firstName"
+                      required
+                      fullWidth
+                      label="First Name"
+                      autoFocus
+                      value={values.firstName}
+                      onChange={handleChange}
+                      id="first-name"
+                    />
+                    <div className="text-red-600">
+                      {errors.firstName &&
+                        touched.firstName &&
+                        errors.firstName}
+                    </div>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                  <FormControl fullWidth>
+                    <TextField
+                      required
+                      fullWidth
+                      onChange={handleChange}
+                      value={values.lastName}
+                      id="last-name"
+                      label="Last Name"
+                      name="lastName"
+                      autoComplete="family-name"
+                    />
+                    <div className="text-red-600">
+                      {errors.lastName && touched.lastName && errors.lastName}
+                    </div>
+                    </FormControl>
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label">
+                        Roles*
+                      </InputLabel>
+                      <Select
+                        name="roleId"
+                        id={"roleId"}
+                        label="Roles*"
+                        value={values.roleId}
+                        onChange={handleChange}
+                      >
+                        {roleList.length > 0 &&
+                          roleList.map((role) => (
+                            <MenuItem value={role.id} key={"name" + role.id}>
+                              {role.name}
+                            </MenuItem>
+                          ))}
+                      </Select>
+                      <div className="text-red-600">
+                        {errors.roleId && touched.roleId && errors.roleId}
+                      </div>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                  <FormControl fullWidth>
+                    <TextField
+                      required
+                      fullWidth
+                      onChange={handleChange}
+                      value={values.email}
+                      id="email"
+                      label="Email Address"
+                      name="email"
+                      autoComplete="email"
+                    />
+                    <div className="text-red-600">
+                      {errors.email && touched.email && errors.email}
+                    </div>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                  <FormControl fullWidth>
+                    <TextField
+                      required
+                      fullWidth
+                      onChange={handleChange}
+                      value={values.password}
+                      name="password"
+                      label="Password"
+                      type="password"
+                      id="password"
+                      autoComplete="new-password"
+                    />
+                    <div className="text-red-600">
+                      {errors.password && touched.password && errors.password}
+                    </div>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl fullWidth>
+                      <TextField
+                        variant="outlined"
+                        required
+                        fullWidth
+                        value={values.confirmPassword}
+                        onChange={handleChange}
+                        name="confirmPassword"
+                        label="confirm Password"
+                        type="password"
+                        id="confirm-password"
+                        autoComplete="current-password"
+                      />
+                      <div className="text-red-600">
+                        {errors.confirmPassword &&
+                          touched.confirmPassword &&
+                          errors.confirmPassword}
+                      </div>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox value="allowExtraEmails" color="primary" />
+                      }
+                      label="I want to receive inspiration, marketing promotions and updates via email."
+                    />
+                  </Grid>
                 </Grid>
-              </Grid>
-            </form>
-          )}
-        </Formik>
-      </div>
-      <Box mt={5}>
-        <Copyright />
-      </Box>
-    </Container>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  Sign Up
+                </Button>
+                <Grid container justifyContent="flex-end">
+                  <Grid item>
+                    <Link to="/Login" className="text-blue-800">
+                      Already have an account? Sign in
+                    </Link>
+                  </Grid>
+                </Grid>
+              </Box>
+            )}
+          </Formik>
+        </Box>
+        <Copyright sx={{ mt: 5 }} />
+      </Container>
+    </ThemeProvider>
   );
 }
